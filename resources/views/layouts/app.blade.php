@@ -9,9 +9,7 @@
 </head>
 <body class="flex flex-col min-h-full">
 @include('includes.header')
-<div class="main flex-[1_0_auto] h-full">
 @yield('content')
-</div>
 @include('includes.footer')
 </body>
 </html>
