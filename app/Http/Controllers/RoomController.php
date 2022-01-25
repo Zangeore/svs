@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Components\Hdrezka;
-use Illuminate\Routing\Controller as BaseController;
 
-class RoomController extends BaseController
+class RoomController extends Controller
 {
     public function index()
     {

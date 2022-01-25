@@ -8,10 +8,11 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <script src="{{ asset('js/app.js') }}" defer></script>
 </head>
-<body class="flex flex-col min-h-full">
-@include('includes.header')
+<body>
 @include('includes.flash')
-@yield('content')
-@include('includes.footer')
+
+<div class="font-sans text-neutral-900 antialiased">
+    {{ $slot }}
+</div>
 </body>
 </html>
