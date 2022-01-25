@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/',  [RoomController::class, 'index']);
     Route::get('/profile',  [ProfileController::class, 'index'])->name('profile');
+    Route::post('/profile',  [ProfileController::class, 'update'])->name('profile');
 });
 
 require __DIR__.'/auth.php';

@@ -20,7 +20,6 @@ RUN apt-get update; \
         php8.0-enchant \
         php8.0-gd \
         php8.0-gearman \
-        php8.0-gmagick \
         php8.0-gmp \
         php8.0-gnupg \
         php8.0-grpc \
@@ -71,6 +70,8 @@ RUN apt-get update; \
         php8.0-yac \
         php8.0-yaml \
         php8.0-zmq \
+        php8.0-gd \
+        libpng-dev \
         php8.0-zstd; \
     apt-get clean; \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
