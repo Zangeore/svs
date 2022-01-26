@@ -5,12 +5,12 @@
         <div class="w-full min-h-full flex justify-evenly">
             <div class="bg-neutral-700/[.2] px-16 flex  justify-center flex-col max-w-[416px]">
                 @if($user->getProfilePhoto())
-                    <img src="{{$user->getProfilePhoto()}}" class="rounded-full">
+                    <img id="profile_pic" src="{{$user->getProfilePhoto()}}" class="rounded-full">
                 @else
                     <img id="profile_pic" src="/images/logo.png" class="rounded-full max-h-72 my-14">
                 @endif
 
-                <input id="profile_img_input" type="file" name="profile_img">
+                <input class="rounded-md" id="profile_img_input" type="file" name="profile_img" placeholder="Edit">
             </div>
             <button type="submit"><img class="w-28 opacity-25 shadow-md" src="/images/sync.png"></button>
             <div class="bg-neutral-700/[.2] px-16 h-full flex flex-col justify-center">

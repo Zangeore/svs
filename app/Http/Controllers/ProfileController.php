@@ -34,12 +34,11 @@ class ProfileController extends Controller
                     'image.*' => 'mimes:jpeg,jpg,bmp,png' // Only allow .jpg, .bmp and .png file types.
                 ]);
                 $file = $request->file('profile_img');
-                $image = Image::make($file->getRealPath())->resize(100, 100, function ($const) {
+                $image = Image::make($file->getRealPath())->resize(200, 200, function ($const) {
                     $const->aspectRatio();
                 })->save(storage_path('app/public/product/temp.'. $file->extension()));
                 $user->photo = $image->encoded;
                 unlink($image->basePath());
-//                $user->photo = ;
             }
             if ($request->request->get('username')) {
                 $request->validate([
