@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddHistoryAndPhotoToUser extends Migration
+class CreateRooms extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class AddHistoryAndPhotoToUser extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->json('history')->nullable();
-            $table->binary('photo')->nullable();
+        Schema::create('rooms', function (Blueprint $table) {
+            $table->string('uuid')->unique();
+            $table->integer('owner_id');
+            $table->json('playlist');
+            $table->dateTime('active_to');
+
         });
     }
 
@@ -26,8 +29,6 @@ class AddHistoryAndPhotoToUser extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['history', 'photo']);
-        });
+        Schema::dropIfExists('room');
     }
 }

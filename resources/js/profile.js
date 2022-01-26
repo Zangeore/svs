@@ -6,4 +6,7 @@ $(document).ready(function (e) {
         }
         reader.readAsDataURL(this.files[0]);
     });
+    $('#photo_input_icon').click(function () {
+        $('#profile_img_input').trigger('click');
+    });
 });

@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/',  [RoomController::class, 'index']);
+    Route::get('/rooms',  [RoomController::class, 'list'])->name('rooms');
+    Route::get('/room/{uuid}',  [RoomController::class, 'index']);
+
     Route::get('/profile',  [ProfileController::class, 'index'])->name('profile');
     Route::post('/profile',  [ProfileController::class, 'update'])->name('profile');
 });

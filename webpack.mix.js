@@ -12,6 +12,10 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
+    .copy(
+        'node_modules/@fortawesome/fontawesome-free/webfonts',
+        'public/webfonts'
+    )
     .postCss('resources/css/app.css', 'public/css', [
     require('postcss-import'),
     require('tailwindcss'),
@@ -21,5 +25,6 @@ mix.js('resources/js/app.js', 'public/js')
     .autoload({
         jquery: ['$', 'window.jQuery', 'jQuery'],
     })
-    .combine(['public/js/app.js', 'public/js/profile.js'], 'public/js/combine.js')
+    .sass('resources/css/fonts.scss', 'public/css')
+    .combine(['public/js/app.js', 'public/js/profile.js'], 'public/js/app.js')
 ;
