@@ -2,6 +2,9 @@
 
 namespace App\Components;
 
+use App\Models\Film;
+use App\Models\FilmQuality;
+use App\Models\ParseService;
 use DiDom\Document;
 use GuzzleHttp\Client;
 use PhpParser\Node\Stmt\DeclareDeclare;
@@ -12,6 +15,8 @@ class Hdrezka
     public $html;
     public $document;
     public $id;
+    public $url;
+    public $filmModel;
 
     /**
      * @throws \DiDom\Exceptions\InvalidSelectorException
@@ -19,6 +24,7 @@ class Hdrezka
      */
     public function __construct($url)
     {
+        $this->url = $url;
         $client = new Client([
             'headers' => $this->header,
             'curl' => [
@@ -31,6 +37,7 @@ class Hdrezka
         $this->document = new Document();
         $this->document->loadHtml($this->html);
         $this->id = $this->getId();
+        $this->createFilmModelIfDontExist();
     }
 
     public function getTranslations(): array
@@ -91,7 +98,7 @@ class Hdrezka
             ],
             'form_params' => [
                 'id' => $this->id,
-                'translator_id' => $episode,
+                'translator_id' => $translator,
                 'season' => $season,
                 'episode' => $episode,
                 'action' => 'get_stream'
@@ -100,6 +107,7 @@ class Hdrezka
         $response = $client->post('https://rezka.ag/ajax/get_cdn_series/?t=1590958856022');
         $data = json_decode($response->getBody()->getContents(), true);
         $urls = $this->getClearUrl($data['url']);
+        $this->createFilmQualityModelIfDontExist($urls, $translator);
         return $urls;
     }
 
@@ -162,4 +170,43 @@ class Hdrezka
         }
         return $clearUrls;
     }
+
+    private function createFilmModelIfDontExist()
+    {
+        $film = Film::query()->where('source_link', $this->url)->get()->first;
+        if (!$film) {
+            $params['title'] = $this->document->find('.b-post__title')[0]->child(1)->innerHtml();;
+            $params['id'] = $this->id;
+            $params['link'] = $this->url;
+            $params['cover_url'] = $this->document->find('.b-sidecover')[0]->child(1)->attr('href');
+            $params['service'] = ParseService::HDREZKA;
+            $this->filmModel = Film::createFilmModel($params);
+        } else {
+            $this->filmModel = $film;
+        }
+    }
+
+    private function createFilmQualityModelIfDontExist($streams, $translator_id)
+    {
+        foreach ($streams as $res => $stream) {
+            $film = FilmQuality::query()->where([
+                ['film_id', '=', $this->filmModel->id],
+                ['translator_id', '=', $translator_id],
+                ['stream_url', '=', $stream],
+                ['quality', '=', $res],
+            ])->get()->first;
+            if ($film) {
+                continue;
+            }
+            $params = [];
+            $params['film_id'] = $this->filmModel->id;
+            $params['translator_id'] = $translator_id;
+            $params['stream_url'] = $stream;
+            $params['quality'] = $res;
+            FilmQuality::createModel($params);
+
+        }
+
+    }
+
 }

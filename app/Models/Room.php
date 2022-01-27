@@ -17,4 +17,17 @@ class Room extends Model
         'playlist',
         'active_to',
     ];
+
+    public function getPlaylist(): array
+    {
+        $films = [];
+        if (!$this->playlist){
+            return  $films;
+        }
+        $playlist = array_keys(json_decode($this->playlist, true));
+        if ($playlist){
+            $films = Film::query()->whereIn('id', $playlist)->get()->all();
+        }
+        return $films;
+    }
 }
