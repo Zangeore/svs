@@ -11,6 +11,7 @@ class Room extends Model
 
     protected $primaryKey = 'uuid';
     protected $table = 'rooms';
+    public $timestamps = false;
     protected $fillable = [
         'uuid',
         'owner_id',

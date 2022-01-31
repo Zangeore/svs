@@ -9,7 +9,13 @@
                         <a href="{{$room['url']}}" class="flex w-full max-h-full items-center">
                             <img src="{{$room['cover']}}" class="max-h-24 px-4 py-4">
                             <div class="w-full max-h-full flex flex-col items-center text-white">
-                                <p class="w-6 py-1"><strong>{{__('Плейлист')}}</strong></p>
+                                <div class="items-center flex h-12 w-full py-1">
+                                <p class="justify-center flex w-full"><strong>{{__('Плейлист')}}</strong> </p>
+                                    <form method="post" action="{{route('room/delete', ['uuid' => $room['uuid']])}}">
+                                        @csrf
+                                        <button type="submit"><i class=" text-white p-4 fas fa-times"></i></button>
+                                    </form>
+                                </div>
                                 <ul class=" overflow-y-scroll w-full h-full bg-neutral-600">
                                     @foreach($room['playlist'] as $film)
                                         <li class="max-h-12 flex px-4 py-4">

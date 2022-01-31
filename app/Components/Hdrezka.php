@@ -107,7 +107,6 @@ class Hdrezka
         $response = $client->post('https://rezka.ag/ajax/get_cdn_series/?t=1590958856022');
         $data = json_decode($response->getBody()->getContents(), true);
         $urls = $this->getClearUrl($data['url']);
-        $this->createFilmQualityModelIfDontExist($urls, $translator);
         return $urls;
     }
 
@@ -186,27 +185,5 @@ class Hdrezka
         }
     }
 
-    private function createFilmQualityModelIfDontExist($streams, $translator_id)
-    {
-        foreach ($streams as $res => $stream) {
-            $film = FilmQuality::query()->where([
-                ['film_id', '=', $this->filmModel->id],
-                ['translator_id', '=', $translator_id],
-                ['stream_url', '=', $stream],
-                ['quality', '=', $res],
-            ])->get()->first;
-            if ($film) {
-                continue;
-            }
-            $params = [];
-            $params['film_id'] = $this->filmModel->id;
-            $params['translator_id'] = $translator_id;
-            $params['stream_url'] = $stream;
-            $params['quality'] = $res;
-            FilmQuality::createModel($params);
-
-        }
-
-    }
 
 }

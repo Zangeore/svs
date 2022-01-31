@@ -30,9 +30,4 @@ class Film extends Model
         $film->save();
         return $film;
     }
-
-    public function getStreamLinks()
-    {
-        $this->hasMany(FilmQuality::class, 'film_id', 'id');
-    }
 }

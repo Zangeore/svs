@@ -1,20 +1,24 @@
 @extends('layouts.app')
 @section('content')
 
-        <div class="main flex-[1_0_auto] h-full w-full bg-neutral-800">
-            <div>
-                <div>
-                    <video
-                        src="https://stream.voidboost.cc/d4d3d6dae69ec455a4642a3714922345:2022012419:NFo1cStPdTVEb0ZEdWVmYk5maUlQYllhWmUyM0JRWjhpSlJsNVEwMlErM1c2Sk80T01jNUJiZU1ScVd6d2VzZ2owQmxtcVlCM0o5QkF4Z0tyWHRFb1E9PQ==/1/8/5/1/0/8/38xlz.mp4"
-                        width="50%" height="50%" controls></video>
-                </div>
-                <div>
-
-                </div>
+    <div class="main flex flex-[1_0_auto] h-full w-full bg-neutral-800 overflow-hidden">
+        <div class="w-[50%]">
+            <div id="player" class="bg-black w-full h-[50%]">
+                {{view('components.player')}}
             </div>
             <div>
 
             </div>
         </div>
-
+        <div id="playlist_block" class="w-[25%] pl-5 bg-neutral-900">
+            <p class="py-3 justify-center flex w-full text-white"><strong>{{__('Плейлист')}}</strong> </p>
+            {{view('components.playlist', ['playlist' => $playlist])}}
+        </div>
+        <div class="w-[25%]">
+        </div>
+    </div>
 @stop
+<script>
+    let removeFilmUrl = '{{route('room/film/delete')}}';
+    let roomUuid = '{{$room->uuid}}';
+</script>
